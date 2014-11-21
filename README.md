@@ -6,6 +6,7 @@ Render Pod as Markdown.
 
 Using panda:
 ```
+$ panda update
 $ panda install Pod::To::Markdown
 ```
 
