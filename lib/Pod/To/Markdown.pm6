@@ -86,7 +86,7 @@ sub named2markdown($pod) {
 	when 'defn'   { pod2markdown($pod.contents) }
 	when 'config' { }
 	when 'nested' { }
-	default       { '# ' ~ $pod.name ~ "\n\n" ~ pod2markdown($pod.contents); }
+	default       { head2markdown(1, $pod.name) ~ "\n\n" ~ pod2markdown($pod.contents); }
     }
 
 }
