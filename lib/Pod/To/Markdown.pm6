@@ -215,15 +215,15 @@ sub formatting2markdown($pod) {
     my $text = $pod.contents>>.&pod2markdown.join;
     $text = '[' ~ $text ~ '](' ~ $text ~ ')'
 	if $pod.type eq 'L';
-    
+
     $text = %Mformats{$pod.type} ~ $text ~ %Mformats{$pod.type}
-        if %Mformats.exists_key: $pod.type;
+        if %Mformats.EXISTS-KEY: $pod.type;
 
     $text = sprintf '<%s>%s</%s>',
         %HTMLformats{$pod.type},
         $text,
  	%HTMLformats{$pod.type}
-	if %HTMLformats.exists_key: $pod.type;
+	if %HTMLformats.EXISTS-KEY: $pod.type;
 
     $text;
 }
