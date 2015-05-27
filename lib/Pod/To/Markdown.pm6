@@ -27,7 +27,7 @@ say pod2markdown($=pod);
 
 =DESCRIPTION
 
-class Pod::To::Markdown;
+unit class Pod::To::Markdown;
 
 #| Render Pod as Markdown
 sub pod2markdown($pod, Str :$positional-separator? = "\n\n") is export {
