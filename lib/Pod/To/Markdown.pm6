@@ -211,7 +211,7 @@ my %HTMLformats =
 
 
 sub formatting2markdown($pod) {
-    return if $pod.type eq 'Z';
+    return '' if $pod.type eq 'Z';
     my $text = $pod.contents>>.&pod2markdown.join;
     $text = '[' ~ $text ~ '](' ~ $text ~ ')'
 	if $pod.type eq 'L';
