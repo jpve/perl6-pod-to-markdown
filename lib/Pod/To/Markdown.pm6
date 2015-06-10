@@ -55,7 +55,10 @@ multi sub pod2markdown(Pod::Block::Named $pod) is export {
 
 multi sub pod2markdown(Pod::Block::Para $pod) is export {
     $pod.contents>>.&pod2markdown.join
+}
 
+sub entity-escape($str) {
+    $str.trans([ '&', '<', '>' ] => [ '&amp;', '&lt;', '&gt;' ])
 }
 
 multi sub pod2markdown(Pod::Block::Table $pod) is export {
@@ -66,7 +69,7 @@ multi sub pod2markdown(Pod::Block::Table $pod) is export {
 	$table ~= "    <tr>\n";
 	for $pod.headers.item[0..*] -> $thead { # TODO: 0..* is needed, but why
 	                                        #       won't it work without?
-	    $table ~= "      <td>" ~ pod2markdown($thead) ~ "</td>\n";
+	    $table ~= "      <td>" ~ entity-escape(pod2markdown($thead)) ~ "</td>\n";
 	}
 	$table ~= "    </tr>\n";
 	$table ~= "  </thead>\n";
@@ -74,7 +77,7 @@ multi sub pod2markdown(Pod::Block::Table $pod) is export {
     for $pod.contents -> @cols {
 	$table ~= "  <tr>\n";
 	for @cols -> $td {
-	    $table ~= "    <td>" ~ pod2markdown($td) ~ "</td>\n";
+	    $table ~= "    <td>" ~ entity-escape(pod2markdown($td)) ~ "</td>\n";
 	}
 	$table ~= "  </tr>\n";
     }
