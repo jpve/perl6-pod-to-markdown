@@ -224,3 +224,5 @@ sub signature2markdown($params) {
       "(\n    " ~ $params.map({ $_.perl }).join(", \n    ") ~ "\n)" 
       !! "()";
 }
+
+# vim: ts=8
