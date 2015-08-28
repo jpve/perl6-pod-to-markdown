@@ -39,7 +39,7 @@ multi sub pod2markdown(Pod::Heading $pod) is export {
 }
 
 multi sub pod2markdown(Pod::Block::Code $pod) is export {
-    $pod.contents.join.trim-trailing.indent(4);
+    $pod.contents>>.&pod2markdown.join.trim-trailing.indent(4);
 }
 
 multi sub pod2markdown(Pod::Block::Named $pod) is export {
