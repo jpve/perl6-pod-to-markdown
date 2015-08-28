@@ -29,6 +29,8 @@ say pod2markdown($=pod);
 
 unit class Pod::To::Markdown;
 
+my Bool $in-code-block = False;
+
 #| Render Pod as Markdown
 multi sub pod2markdown(Pod::Heading $pod) is export {
     my Str $head = pod2markdown(
@@ -39,6 +41,7 @@ multi sub pod2markdown(Pod::Heading $pod) is export {
 }
 
 multi sub pod2markdown(Pod::Block::Code $pod) is export {
+    temp $in-code-block = True;
     $pod.contents>>.&pod2markdown.join.trim-trailing.indent(4);
 }
 
@@ -159,8 +162,12 @@ my %HTMLformats =
 multi sub pod2markdown(Pod::FormattingCode $pod) is export {
     return '' if $pod.type eq 'Z';
     my $text = $pod.contents>>.&pod2markdown.join;
+
+    # It is safer to strip formatting in code blocks
+    return $text if $in-code-block;
+
     $text = '[' ~ $text ~ '](' ~ $text ~ ')'
-	if $pod.type eq 'L';
+        if $pod.type eq 'L';
 
     $text = %Mformats{$pod.type} ~ $text ~ %Mformats{$pod.type}
         if %Mformats.EXISTS-KEY: $pod.type;
